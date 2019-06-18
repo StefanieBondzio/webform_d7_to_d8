@@ -124,7 +124,8 @@ class Submission {
   public function process() : string {
     if ($this->alreadyProcessed()) {
       $this->print('Sid ' . $this->sid . ' for webform ' . $this->webform->getNid() . ' already processed; moving on...');
-      #return 'already processed';
+      // auskommentieren, wenn alle Einträge nochmal migriert werden sollen (vorher die alten Einträge löschen, sonst wird gedoppelt)
+      return 'already processed';
     }
 
     // See https://www.drupal.org/docs/8/modules/webform/webform-cookbook/how-to-programmatically-create-a-submission
