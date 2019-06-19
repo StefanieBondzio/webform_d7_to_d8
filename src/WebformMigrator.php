@@ -255,6 +255,7 @@ class WebformMigrator {
       throw new \Exception('Did not get any results, this probably means you have no webforms on the legacy site, so this module will not do anything!');
     }
     $this->print('');
+    $this->print('Your database for the migration is @db', ['@db' => $this->getAllConnectionInfo()]);
     $keys = array_keys($result);
     $this->print('OK, got at least one result: @r', ['@r' => array_pop($keys)]);
     $this->print('');
