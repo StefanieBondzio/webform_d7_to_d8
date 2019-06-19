@@ -54,6 +54,7 @@ class Submission {
     $sid = $this->getSid();
     $nid = $this->getWebformNid();
 
+    //getting the sid from cache is not the best id, when running migrations again
     $items = $this->stateGetArray('webform_d7_to_d8_per_node', []);
     if (isset($items[$nid])) {
       return $items[$nid] >= $sid;
@@ -125,7 +126,8 @@ class Submission {
     if ($this->alreadyProcessed()) {
       $this->print('Sid ' . $this->sid . ' for webform ' . $this->webform->getNid() . ' already processed; moving on...');
       // auskommentieren, wenn alle Einträge nochmal migriert werden sollen (vorher die alten Einträge löschen, sonst wird gedoppelt)
-      return 'already processed';
+      //return 'already processed';
+      // should check the sid in the target table - not from cache
     }
 
     // See https://www.drupal.org/docs/8/modules/webform/webform-cookbook/how-to-programmatically-create-a-submission

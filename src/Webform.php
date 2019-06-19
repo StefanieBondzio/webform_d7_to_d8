@@ -67,8 +67,11 @@ class Webform {
 
   /**
    * Return the first sid (submission id) to import.
+   *
    */
   public function firstSid() {
+    //It returns the last sid for all webforms...
+    //missing a function for returning last id for a special webform id
     return \Drupal::state()->get('webform_d7_to_d8', 0);
   }
 

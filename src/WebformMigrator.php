@@ -230,7 +230,25 @@ class WebformMigrator {
     #$last = array_pop($keys);
     $last = end($keys);
     $this->print('Keep track of latest imported submission id, @s, to not import the same submissions next time.', ['@s' => $last]);
+    //check the last record from the Drupal 7 webform_submissions against the Drupal 8 webform_submissions
+    $last = $this->getLastImportedSid();
     \Drupal::state()->set('webform_d7_to_d8', $last);
+  }
+
+  /**
+   * Remeber the last imported submission id in the target table (Drupal 8).
+   *
+   */
+  public function getLastImportedSid() {
+    $query = $this->getConnection('default')->select('webform_submission', 'ws8');
+    $query->addField('ws8', 'sid');
+    $query->range(0, 1);
+    $query->orderBy('sid', 'DESC');
+    $result = $query->execute()->fetchAllAssoc('sid');
+    $keys = array_keys($result);
+    $last = end($keys);
+    $this->print('This is the latest imported submission id from the Drupal 8 table, @s, to not import the same submissions next time.', ['@s' => $last]);
+    return $last;
   }
 
   /**
@@ -255,7 +273,6 @@ class WebformMigrator {
       throw new \Exception('Did not get any results, this probably means you have no webforms on the legacy site, so this module will not do anything!');
     }
     $this->print('');
-    $this->print('Your database for the migration is @db', ['@db' => $this->getAllConnectionInfo()]);
     $keys = array_keys($result);
     $this->print('OK, got at least one result: @r', ['@r' => array_pop($keys)]);
     $this->print('');
