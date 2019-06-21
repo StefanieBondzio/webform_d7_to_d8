@@ -135,6 +135,7 @@ class Submission {
       'entity_id' => NULL,
       'in_draft' => FALSE,
       'uid' => $this->getUid(),
+      'sid' => $this->getSid(),
       'langcode' => 'de',
       'token' => 'pgmJREX2l4geg2RGFp0p78Qdfm1ksLxe6IlZ-mN9GZI',
       'uri' => '/webform/my_webform/api',
