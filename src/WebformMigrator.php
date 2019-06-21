@@ -201,9 +201,7 @@ class WebformMigrator {
     $webforms = $this->webforms($options)->toArray();
     foreach ($webforms as $webform) {
       $this->print('Processing webform with nid @n', ['@n' => $webform->getNid()]);
-      $this->print('No starting processing...');
       $webform->process($options);
-      $this->print('End of processing...');
     }
     $errors = $this->errors();
     if (!count($errors)) {
@@ -222,7 +220,6 @@ class WebformMigrator {
    * Remeber the last imported submission id in a state variable.
    */
   public function setLastImportedSid() {
-    //
     $query = $this->getConnection('upgrade')->select('webform_submissions', 'ws');
     $query->addField('ws', 'sid');
     $query->range(0, 1);
@@ -231,11 +228,9 @@ class WebformMigrator {
     $keys = array_keys($result);
     // array_pop schneidet letztes Element des Arrays ab und gibt als return zurück, daher war immer ein Element zu wenig den Webforsubmissions, wenn vorher eine Simulation lief
     #$last = array_pop($keys);
-    $last = end($keys);
+    #$last = end($keys);
     $this->print('Keep track of latest imported submission id, @s, to not import the same submissions next time.', ['@s' => $last]);
-    // $last speichert die zuletzt importierte sid - Problem ist jedoch, dass bei erneutem import diese sids ignoriert werden da sie <= $last sind - daher $last = 0 setzen - eigentlich sollte Funktion ganz rausfliegen
-    //\Drupal::state()->set('webform_d7_to_d8', $last);
-    \Drupal::state()->set('webform_d7_to_d8', 0);
+    \Drupal::state()->set('webform_d7_to_d8', $last);
   }
 
   /**
